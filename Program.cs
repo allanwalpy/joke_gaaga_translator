@@ -1,20 +1,22 @@
 // See https://aka.ms/new-console-template for more information
 
-Console.WriteLine("enter inpuut");
-string? input = Console.ReadLine();
+Console.WriteLine("encode://press 1 or decode://press 0");
+string option = Console.ReadLine() ?? "0";
 
-var numbers = (input ?? String.Empty)
-    .ToList<char>()
-    .ConvertAll<int>(c => (int)c);
+Console.WriteLine("\nalso enter text");
+string input = Console.ReadLine() ?? String.Empty;
 
-var result = new System.Text.StringBuilder();
-for (int i = 0; i < numbers.Count; i++)
+bool isDecode = option == "0";
+
+if (isDecode && !Library.IsDecodable(input))
 {
-    result.Append(
-        Convert.ToString(numbers[i], 2)
-            .Replace('0', 'Г')
-            .Replace('1', 'А')
-    );
+    Console.WriteLine("error://string_non_parsable");
+    Environment.Exit(1);
 }
 
+string result = isDecode
+    ? (Library.IsDecodable(input) ? Library.TranslateToText(input) : String.Empty)
+    : Library.TranslateToGaaga(input);
+
+Console.WriteLine("result");
 Console.WriteLine(result);
